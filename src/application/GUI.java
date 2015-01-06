@@ -34,18 +34,18 @@ public class GUI extends JPanel{
 	250 < x < 780
 	1 < y < 450
 	 */
-	
+	private final double epsilon = 1e-11;  //minimize risk of coordinate-duplicates.
 	private final int canvasXmin = 250;
 	private final int canvasXmax = 780;
 	private final int canvasYmin = 1;
 	private final int canvasYmax = 450;
 
-	private int mouseX;
-	private int mouseY;
+	private double mouseX;
+	private double mouseY;
 	private final int dotSize = 6;
 
 	/* input-points */
-	public ArrayList<Point> inputPoints = new ArrayList<Point>();
+	public ArrayList<algorithm.Point> inputPoints = new ArrayList<algorithm.Point>();
 
 	private JPanel buttonPanel;
 	private JButton compute;
@@ -72,9 +72,10 @@ public class GUI extends JPanel{
 			public void mouseEntered(MouseEvent e) {}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				mouseX = e.getX();
-				mouseY = e.getY();
+				mouseX = e.getX()+epsilon;
+				mouseY = e.getY()+epsilon;
 				inputPoints.add(createPoint(mouseX, mouseY));
+				
 
 				System.out.println(mouseX + " " + mouseY);
 				repaint();
@@ -134,9 +135,9 @@ public class GUI extends JPanel{
 
 					for (int i=0; i<inputNumber;i++){
 
-						int randX = rngX.nextIntInRange(canvasXmin, canvasXmax);
-						int randY = rngY.nextIntInRange(canvasYmin, canvasYmax); 
-						inputPoints.add(new Point(randX, randY));
+						double randX = rngX.nextDoubleInRange(canvasXmin, canvasXmax);
+						double randY = rngY.nextDoubleInRange(canvasYmin, canvasYmax); 
+						inputPoints.add(new algorithm.Point(randX, randY));
 					}
 					repaint();
 					numbOfPoints.setText("");
@@ -158,14 +159,15 @@ public class GUI extends JPanel{
 	}
 
 	/*creates a 2-dimensional point*/
-	public Point createPoint(int x, int y){Point point = new Point(x, y);return point;}
+	public algorithm.Point createPoint(double mouseX2, double mouseY2){algorithm.Point point = new algorithm.Point(mouseX2, mouseY2);return point;}
 
 	public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
 		g.setColor(Color.green);
-		for (Point point: inputPoints){
-			g.fillRect(point.x, point.y, dotSize, dotSize);
+		for (algorithm.Point point: inputPoints){
+			g.fillRect((int)point.x, (int)point.y, dotSize, dotSize);
+			System.out.println(inputPoints);
 
 		}
 	};

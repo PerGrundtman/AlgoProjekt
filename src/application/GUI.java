@@ -34,6 +34,7 @@ public class GUI extends JPanel{
 	250 < x < 780
 	1 < y < 450
 	 */
+	
 	private final int canvasXmin = 250;
 	private final int canvasXmax = 780;
 	private final int canvasYmin = 1;
